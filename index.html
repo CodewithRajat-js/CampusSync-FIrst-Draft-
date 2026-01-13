@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusSync | Campus Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>CampusSync</span>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active" onclick="showSection('dashboard', this)">
+                <i class="fa-solid fa-calendar-days"></i> <span>Calendar</span>
+            </li>
+            <li class="nav-item" onclick="showSection('faculty', this)">
+                <i class="fa-solid fa-chalkboard-user"></i> <span>Faculty</span>
+            </li>
+            <li class="nav-item" onclick="showSection('community', this)">
+                <i class="fa-solid fa-users"></i> <span>Community</span>
+            </li>
+            <li class="nav-item" onclick="showSection('committee', this)">
+                <i class="fa-solid fa-calendar-check"></i> <span>Committee Events</span>
+            </li>
+            <li class="nav-item" onclick="showSection('attendance', this)">
+                <i class="fa-solid fa-chart-pie"></i> <span>Attendance</span>
+            </li>
+        </ul>
+        <div class="bottom-actions">
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fa-solid fa-moon" id="themeIcon"></i> <span>Dark Mode</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <h2>Academic Calendar</h2>
+            <div class="calendar-legend">
+                <div><span class="badge bg-holiday"></span> Holiday</div>
+                <div><span class="badge bg-event"></span> Event</div>
+                <div><span class="badge bg-exam"></span> Exam</div>
+            </div>
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+
+        <!-- Faculty Hub Section -->
+        <section id="faculty" class="section">
+            <h2>Faculty Hub</h2>
+            <div class="mode-switch">
+                <span>Student View</span>
+                <label class="switch">
+                    <input type="checkbox" id="facultyToggle" onchange="toggleFacultyMode()">
+                    <span class="slider"></span>
+                </label>
+                <span>Faculty Mode (Edit)</span>
+            </div>
+            <div class="faculty-grid" id="facultyGrid"></div>
+        </section>
+
+        <!-- Community Section -->
+        <section id="community" class="section">
+            <h2>Community & Connect</h2>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('teammates', this)">Teammates</button>
+                <button class="tab-btn" onclick="openTab('backlog', this)">Backlogs</button>
+                <button class="tab-btn" onclick="openTab('benefits', this)">Benefits</button>
+            </div>
+
+            <div id="teammates" class="tab-content active">
+                <div class="teammate-card">
+                    <div>
+                        <h3>TechFest Hackathon</h3>
+                        <p style="color:var(--text-muted)">Looking for a UI Designer & Frontend Dev.</p>
+                    </div>
+                    <button class="btn-connect" onclick="alert('Connection request sent!')">Connect</button>
+                </div>
+                <div class="teammate-card">
+                    <div>
+                        <h3>Annual Dance Competition</h3>
+                        <p style="color:var(--text-muted)">Need 2 more people for Group A.</p>
+                    </div>
+                    <button class="btn-connect" onclick="alert('Connection request sent!')">Connect</button>
+                </div>
+            </div>
+
+            <div id="backlog" class="tab-content">
+                <div class="teammate-card">
+                    <div>
+                        <h3>Engineering Mathematics II</h3>
+                        <p style="color:var(--text-muted)">Shared Notes by Topper (PDF)</p>
+                    </div>
+                    <button class="btn-connect"><i class="fa-solid fa-download"></i></button>
+                </div>
+                <div class="teammate-card">
+                    <div>
+                        <h3>Data Structures & Algorithms</h3>
+                        <p style="color:var(--text-muted)">Complete Course Notes (PDF)</p>
+                    </div>
+                    <button class="btn-connect"><i class="fa-solid fa-download"></i></button>
+                </div>
+            </div>
+
+            <div id="benefits" class="tab-content">
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-wifi"></i>
+                        <h4>Free Wi-Fi</h4>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-book"></i>
+                        <h4>Library 24/7</h4>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-dumbbell"></i>
+                        <h4>Gym Access</h4>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-coffee"></i>
+                        <h4>Cafeteria</h4>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-laptop"></i>
+                        <h4>Computer Lab</h4>
+                    </div>
+                    <div class="benefit-card">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h4>Security 24/7</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Committee Events Hub Section -->
+        <section id="committee" class="section">
+            <h2>Committee Events Hub</h2>
+            <div class="mode-switch">
+                <span>Student View</span>
+                <label class="switch">
+                    <input type="checkbox" id="committeeToggle" onchange="toggleCommitteeMode()">
+                    <span class="slider"></span>
+                </label>
+                <span>Committee Admin</span>
+            </div>
+            
+            <!-- Admin View: Form -->
+            <div id="committeeAdminView" class="committee-admin-view" style="display:none;">
+                <div class="event-form-card">
+                    <h3>Post New Event</h3>
+                    <form id="eventForm" onsubmit="postEvent(event)">
+                        <div class="form-group">
+                            <label for="eventTitle">Event Title</label>
+                            <input type="text" id="eventTitle" required placeholder="Enter event title">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDate">Event Date</label>
+                            <input type="date" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventDescription">Description</label>
+                            <textarea id="eventDescription" required rows="4" placeholder="Enter event description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventLink">Registration Link</label>
+                            <input type="url" id="eventLink" required placeholder="https://example.com/register">
+                        </div>
+                        <button type="submit" class="btn-submit">
+                            <i class="fa-solid fa-plus"></i> Post Event
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Student View: Event Feed -->
+            <div id="committeeStudentView" class="committee-student-view">
+                <div class="events-feed" id="eventsFeed"></div>
+            </div>
+        </section>
+
+        <!-- Attendance Section -->
+        <section id="attendance" class="section">
+            <h2>Attendance Planner</h2>
+            <div class="attendance-container">
+                <div class="chart-area">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path id="circlePath" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" stroke="#E1AD01" />
+                        <text x="18" y="20.35" class="percentage" id="percentText">0%</text>
+                    </svg>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <label>Total Classes</label>
+                        <input type="number" id="totalClasses" value="40" min="0" oninput="calculateAttendance()">
+                    </div>
+                    <div class="input-wrapper">
+                        <label>Attended</label>
+                        <input type="number" id="attendedClasses" value="30" min="0" oninput="calculateAttendance()">
+                    </div>
+                </div>
+
+                <div id="projectionResult" class="projection-result">
+                    <h4>Projected Attendance</h4>
+                    <p id="projText">--%</p>
+                </div>
+            </div>
+
+            <div class="fab" onclick="togglePlanner()">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Planner Modal Overlay -->
+    <div class="planner-overlay" id="plannerOverlay">
+        <div class="planner-modal">
+            <h3>Plan Next 10 Classes</h3>
+            <p class="planner-hint">Click box to toggle: Attend (Green) / Skip (Red)</p>
+            <div class="planner-grid" id="plannerGrid"></div>
+            <div class="planner-actions">
+                <button class="btn-cancel" onclick="togglePlanner()">Cancel</button>
+                <button class="btn-calculate" onclick="applyPlan()">Calculate Projection</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
